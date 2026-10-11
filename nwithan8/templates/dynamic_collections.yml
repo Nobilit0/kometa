@@ -1,0 +1,112 @@
+external_templates:
+  - repo: templates/collections
+
+templates:
+  # Dynamic Collections Templates
+  # -----------------------------
+  Per_Genre:
+    smart_filter:
+      sort_by: critic_rating.desc
+      all:
+        genre: <<value>>
+    default:
+      level: ""
+    sort_title: 070__<<level>>_<<key_name>>
+    url_poster: https://raw.githubusercontent.com/Kometa-Team/Default-Images/master/genre/<<key_name>>.jpg
+    visible_library: false
+    visible_shared: false
+    visible_home: false
+    schedule:
+      - weekly(monday)
+      - weekly(thursday)
+
+  Best_Of_Decade:
+    smart_filter:
+      limit: 1000
+      sort_by: audience_rating.desc
+      all:
+        year.gte: <<key_name>>
+        year.lte: <<ending>>
+    default:
+      level: ""
+    sort_title: 080__<<level>>_<<starting>>
+    url_poster: https://raw.githubusercontent.com/zluckytraveler/Plex-Meta-Manager-Configs/master/zluckytraveler/Posters/Decades/<<starting>>.png
+    visible_library: false
+    visible_shared: false
+    visible_home: false
+    schedule:
+      - monthly(16)
+
+  Per_Decade:
+    smart_filter:
+      sort_by: audience_rating.desc
+      all:
+        year.gte: <<key_name>>
+        year.lte: <<ending>>
+    default:
+      level: ""
+    sort_title: 081__<<level>>_<<starting>>
+    url_poster: https://raw.githubusercontent.com/Kometa-Team/Default-Images/master/decade/<<starting>>.jpg
+    visible_library: false
+    visible_shared: false
+    visible_home: false
+    schedule:
+      - monthly(16)
+
+  Per_Country:
+    smart_filter:
+      sort_by: critic_rating.desc
+      any:
+        country: <<value>>
+    default:
+      level: ""
+    sort_title: 110__<<level>>_<<key_name>>
+    url_poster: https://raw.githubusercontent.com/Kometa-Team/Default-Images/master/country/white/<<key_name>>.jpg
+    visible_library: false
+    visible_shared: false
+    visible_home: false
+    schedule:
+      - weekly(saturday)
+
+  Per_Language:
+    smart_filter:
+      sort_by: critic_rating.desc
+      any:
+        audio_language: <<value>>
+    default:
+      level: ""
+    sort_title: 115__<<level>>_<<key_name>>
+    url_poster: https://raw.githubusercontent.com/Kometa-Team/Default-Images/master/audio_language/<<value>>.jpg
+    visible_library: false
+    visible_shared: false
+    visible_home: false
+    schedule:
+      - weekly(sunday)
+
+  Per_Memoriam_Actor:
+    allowed_library_types: <<library_type>>
+    sort_title: 001__<<level>>_<<key_name>>
+    title_format: "🕊️ Remembering <<key_name>>"
+    visible_library: true
+    visible_shared: true
+    visible_home: true
+    schedule:
+      - daily
+    delete_not_scheduled: true
+    style: bw
+    sort_by: audience_rating.desc
+    cache_builders: 1 # No need to reparse the list every time
+
+  Per_Memoriam_Director:
+    allowed_library_types: <<library_type>>
+    sort_title: 002__<<level>>_<<key_name>>
+    title_format: "🕊️ Remembering <<key_name>>"
+    visible_library: true
+    visible_shared: true
+    visible_home: true
+    schedule:
+      - daily
+    delete_not_scheduled: true
+    style: bw
+    sort_by: audience_rating.desc
+    cache_builders: 1 # No need to reparse the list every time
