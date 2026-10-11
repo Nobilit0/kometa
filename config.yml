@@ -48,8 +48,8 @@ settings:
   template:
     - name: my_global_setup
       library: settings 
-        asset_directory:
-        - /opt/kometa-quickstart/config/assets/
+  asset_directory:
+    - /opt/kometa-quickstart/config/assets/
  
   
   
