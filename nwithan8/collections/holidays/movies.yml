@@ -2,6 +2,26 @@ external_templates:
   - repo: nwithan8/templates/collections
   - repo: nwithan8/templates/dynamic_collections
 
+templates:
+  Christmas_Advent_Calendar:
+    allowed_library_types: movie
+    summary: Day <<key>> of the Christmas Advent Calendar
+    sort_title: 061_Christmas_Advent_Calendar_<<key>> # 061_ is after 060_ for Holiday templates, before 065_ for Collection templates
+    letterboxd_list:
+      - https://letterboxd.com/nwithan8/list/christmas-advent-calendar
+    limit: <<key>>
+    collection_order: custom
+    schedule:
+      - range(12/01-12/26)
+    visible_home:
+      - yearly(12/<<key>>)
+    visible_shared:
+      - yearly(12/<<key>>)
+    visible_library:
+      - yearly(12/<<key>>)
+    url_poster: https://as2.ftcdn.net/v2/jpg/03/05/39/41/1000_F_305394138_GiLwZEU9Fq7BG81bThTvkuzrJggyPc3W.jpg
+    cache_builders: 1 # No need to reparse the list every time
+
 collections:
   "🎊 New Year's Day":
     schedule: range(12/26-01/05)
@@ -181,7 +201,8 @@ collections:
     summary: "Don't be scared, it's just a movie."
     collection_order: random
     trakt_list:
-      - https://trakt.tv/users/lish408/lists/31-days-of-horror-2023  # TODO: Change annually
+      - https://app.trakt.tv/users/garycrawfordgc/lists/horror
+    poster_url: https://raw.githubusercontent.com/Kometa-Team/Default-Images/master/genre/Horror.jpg
 
   "🍬 Trick or Treat":
     schedule: range(10/01-11/01)
@@ -190,11 +211,12 @@ collections:
     visible_library: range(10/01-10/31)
     template: { name: Holiday,
                 level: "++" }
-    summary: "Trick or Treat!"
+    summary: "Trick or Treat! Safe for the whole family!"
     collection_order: random
     trakt_list:
       - https://trakt.tv/users/hdlists/lists/halloween-movies-for-kids
-
+    poster_url: https://raw.githubusercontent.com/Nobilit0/kometa/main/images/trick_or_treat.jpg
+   
   "🔪 Slasher":
     schedule: range(10/01-11/01)
     visible_home: range(10/01-10/31)
@@ -206,6 +228,7 @@ collections:
     collection_order: random
     trakt_list:
       - https://trakt.tv/users/hdlists/lists/80s-slasher-movies
+    poster_url: https://raw.githubusercontent.com/Kometa-Team/Default-Images/master/genre/Slasher.jpg
 
   "🗳️ Election Day":
     schedule: range(10/25-11/12)
@@ -266,3 +289,15 @@ collections:
     collection_order: random
     trakt_list:
       - https://trakt.tv/users/mzdiobolik/lists/hallmark-christmas-movies
+
+
+dynamic_collections:
+  Christmas Advent Calendar DC: # mapping name does not matter just needs to be unique
+    type: number
+    sync: true
+    data:
+      starting: 1
+      ending: 25
+    title_format: "🎄 Advent Calendar - Day <<key_name>>"
+    template:
+      - Christmas_Advent_Calendar
