@@ -2,245 +2,244 @@
 templates:
   my_global_setup:
 #==================== Movies ====================#
-	  Movies:
-		library_name: Movies
-		metadata_files:
-		 # - repo: 
-		remove_overlays: false           # Set this to true to remove all overlays
-		collection_files:
-		- default: basic                   # This is a file within Kometa's defaults folder
-		- default: imdb                    # This is a file within Kometa's defaults folder
-		  template_variables:
-			  # Ensure all collections are explicitly enabled
-			use_top: true
-			use_popular: true
-			use_lowest: true
+    Movies:
+    library_name: Movies
+    metadata_files:
+     # - repo: collections/holidays/movies
+    #- file: config/nwithan8/collections/holidays/movies
+    remove_overlays: false           # Set this to true to remove all overlays
+    collection_files:
+    - default: basic                   # This is a file within Kometa's defaults folder
+    - default: imdb                    # This is a file within Kometa's defaults folder
+      template_variables:
+          # Ensure all collections are explicitly enabled
+        use_top: true
+        use_popular: true
+        use_lowest: true
 
-			  # Isolate Radarr commands only to the IMDb Top 250 collection
-			radarr_add_missing_top: true
-			radarr_add_missing_popular: true
-			radarr_quality_top: HD-1080p
-			radarr_quality_popular: HD-1080p
-			  # Force Radarr to immediately trigger a search ONLY for Top 250 missing items
-			radarr_search_top: false
-			radarr_search_popular: false
+          # Isolate Radarr commands only to the IMDb Top 250 collection
+        radarr_add_missing_top: true
+        radarr_add_missing_popular: true
+        radarr_quality_top: HD-1080p
+        radarr_quality_popular: HD-1080p
+          # Force Radarr to immediately trigger a search ONLY for Top 250 missing items
+        radarr_search_top: false
+        radarr_search_popular: false
 
-		- repo: nwithan8/collections/holidays/movies
+    - repo: nwithan8/collections/holidays/movies
 
-		  # ========================================================
-		  # Trending Movies
-		  # ========================================================
-		- repo: nobilit0/collections/trending/movies
-		  template_variables:
+      # ========================================================
+      # Trending Movies
+      # ========================================================
+#    - file: /opt/kometa-quickstart/config/collections/trending/movies
+    - repo: nobilit0/collections/trending/movies
+      template_variables:
 
-			  # ------------------------------------------------------
-			  # 🍿 At The Box Office
-			  # ------------------------------------------------------
-			radarr_add_missing_boxoffice: true
-			radarr_search_boxoffice: false
+          # ------------------------------------------------------
+          # 🍿 At The Box Office
+          # ------------------------------------------------------
+        radarr_add_missing_boxoffice: true
+#          radarr_quality_boxoffice: "HD-1080p"
+        radarr_search_boxoffice: false
 
-			  # ------------------------------------------------------
-			  # 📈 Trending Now
-			  # ------------------------------------------------------
-			radarr_add_missing_trending: true
-			radarr_search_trending: false
+          # ------------------------------------------------------
+          # 📈 Trending Now
+          # ------------------------------------------------------
+        radarr_add_missing_trending: true
+#          radarr_quality_trending: "HD-1080p"
+        radarr_search_trending: false
 
-			  # ------------------------------------------------------
-			  # 👀 What Everyone Is Watching
-			  # ------------------------------------------------------
-			radarr_add_missing_everyone: true
-			radarr_search_everyone: false
+          # ------------------------------------------------------
+          # 👀 What Everyone Is Watching
+          # ------------------------------------------------------
+        radarr_add_missing_everyone: true
+#          radarr_quality_everyone: "HD-1080p"
+        radarr_search_everyone: false
 
 
 
 
-		- default: resolution
-		- default: universe
-		- default: franchise
-		- default: based
-		- default: anilist
-		- default: studio
-		- default: tautulli
-		
-		
-	#==================== Overlays ====================#
-		overlay_files:
-		- default: ribbon
-		- default: audio_codec
-		- default: languages
-		  template_variables:
-			languages:
-			  - af
-			  - am
-			  - ar
-			  - sq
-			  - hy
-			  - eu
-			  - bn
-			  - bg
-			  - my
-			  - ca
-			  - zh
-			  - hr
-			  - cs
-			  - da
-			  - nl
-			  - en
-			  - eo
-			  - et
-			  - tl
-			  - fi
-			  - fr
-			  - gl
-			  - ka
-			  - de
-			  - el
-			  - gu
-			  - he
-			  - hi
-			  - hu
-			  - is
-			  - id
-			  - ga
-			  - it
-			  - ja
-			  - kn
-			  - km
-			  - ko
-			  - la
-			  - lv
-			  - lt
-			  - mk
-			  - ms
-			  - ml
-			  - mr
-			  - ne
-			  - no
-			  - fa
-			  - pl
-			  - pt
-			  - pa
-			  - ro
-			  - ru
-			  - sr
-			  - si
-			  - sk
-			  - sl
-			  - es
-			  - sw
-			  - sv
-			  - ta
-			  - te
-			  - th
-			  - tr
-			  - uk
-			  - ur
-			  - vi
-			  - cy
-			  - yo
-			  - zu
-		- default: resolution
-		- default: runtimes
-		- default: versions
-		- default: video_format
-		- default: streaming
-		- default: studio
+    - default: resolution
+    - default: universe
+    - default: franchise
+    - default: based
+    - default: anilist
+    - default: studio
+    - default: tautulli
+    
+    
+#==================== Overlays ====================#
+    overlay_files:
+    - default: ribbon
+    - default: audio_codec
+    - default: languages
+      template_variables:
+        languages:
+          - af
+          - am
+          - ar
+          - sq
+          - hy
+          - eu
+          - bn
+          - bg
+          - my
+          - ca
+          - zh
+          - hr
+          - cs
+          - da
+          - nl
+          - en
+          - eo
+          - et
+          - tl
+          - fi
+          - fr
+          - gl
+          - ka
+          - de
+          - el
+          - gu
+          - he
+          - hi
+          - hu
+          - is
+          - id
+          - ga
+          - it
+          - ja
+          - kn
+          - km
+          - ko
+          - la
+          - lv
+          - lt
+          - mk
+          - ms
+          - ml
+          - mr
+          - ne
+          - no
+          - fa
+          - pl
+          - pt
+          - pa
+          - ro
+          - ru
+          - sr
+          - si
+          - sk
+          - sl
+          - es
+          - sw
+          - sv
+          - ta
+          - te
+          - th
+          - tr
+          - uk
+          - ur
+          - vi
+          - cy
+          - yo
+          - zu
+    - default: resolution
+    - default: runtimes
+    - default: versions
+    - default: video_format
+    - default: streaming
+    - default: studio
 
-###################################################
-#  _______     __  ____  _                        #
-# |_   _\ \   / / / ___|| |__   _____      _____  #
-#   | |  \ \ / /  \___ \| '_ \ / _ \ \ /\ / / __| #
-#   | |   \ V /    ___) | | | | (_) \ V  V /\__ \ #
-#   |_|    \_/    |____/|_| |_|\___/ \_/\_/ |___/ #
-#                                                 #
-###################################################
-	  TV Shows:
-		collection_files:
-		- default: basic
-		- default: imdb
-		- repo: nwithan8/collections/trending/shows
-		- default: universe
-		- default: franchise
-		- default: based
-		- default: network
-		- default: studio
-		- default: tautulli
-		operations:
-		  mass_metadata_update:
-			ratings:
-			  audience: tmdb
-			  critic: imdb
-			  user: mdb_tomatoes
-			  episode_audience: tmdb
-			  episode_critic: imdb
-			  
-			  
-	############################################
-	#   ___                 _                  #
-	#  / _ \__   _____ _ __| | __ _ _   _ ___  #
-	# | | | \ \ / / _ \ '__| |/ _` | | | / __| #
-	# | |_| |\ V /  __/ |  | | (_| | |_| \__ \ #
-	#  \___/  \_/ \___|_|  |_|\__,_|\__, |___/ #
-	#                               |___/      #
-	############################################
-		overlay_files:
-		- default: ribbon
-		- default: status
-		  template_variables:
-			back_color_airing: '#016920FF'
-			back_color_returning: '#81007FFF'
-			back_color_canceled: '#B52222FF'
-			back_color_ended: '#000847FF'
-			horizontal_offset: 0
-			vertical_offset: 242
-		- default: audio_codec
-		- default: audio_codec
-		  template_variables:
-			builder_level: season
-		- default: audio_codec
-		  template_variables:
-			builder_level: episode
-		- default: language_count
-		- default: languages
-		  template_variables:
-			vertical_offset: 383
-		- default: languages
-		  template_variables:
-			builder_level: season
-		- default: languages
-		  template_variables:
-			builder_level: episode
-		- default: languages
-		  template_variables:
-			builder_level: episode
-			use_subtitles: true
-		- default: resolution
-		- default: resolution
-		  template_variables:
-			builder_level: season
-		- default: resolution
-		  template_variables:
-			builder_level: episode
-		- default: versions
-		- default: versions
-		  template_variables:
-			builder_level: episode
-		- default: video_format
-		- default: video_format
-		  template_variables:
-			builder_level: season
-		- default: video_format
-		  template_variables:
-			builder_level: episode
-		- default: streaming
-		- default: studio
-		- default: network
-		- default: episode_info
-		  template_variables:
-			builder_level: episode
-		- default: runtimes
-		  template_variables:
-			builder_level: episode
+    TV Shows:
+    collection_files:
+    - default: basic                 # This is a file within Kometa's defaults folder
+    - default: imdb                  # This is a file within Kometa's defaults folder
+      # see the wiki for how to use local files, folders, URLs, or files from git
+    #- file: config/nwithan8/collections/trending/shows
+    - repo: nwithan8/collections/trending/shows
+    - default: universe
+    - default: franchise
+    - default: based
+    - default: network
+    - default: studio
+    - default: tautulli
+    operations:
+      mass_metadata_update:
+        ratings:
+          audience: tmdb
+          critic: imdb
+          user: mdb_tomatoes
+          episode_audience: tmdb
+          episode_critic: imdb
+          
+          
+############################################
+#   ___                 _                  #
+#  / _ \__   _____ _ __| | __ _ _   _ ___  #
+# | | | \ \ / / _ \ '__| |/ _` | | | / __| #
+# | |_| |\ V /  __/ |  | | (_| | |_| \__ \ #
+#  \___/  \_/ \___|_|  |_|\__,_|\__, |___/ #
+#                               |___/      #
+############################################
+    overlay_files:
+    - default: ribbon
+    - default: status
+      template_variables:
+        back_color_airing: '#016920FF'
+        back_color_returning: '#81007FFF'
+        back_color_canceled: '#B52222FF'
+        back_color_ended: '#000847FF'
+        horizontal_offset: 0
+        vertical_offset: 242
+    - default: audio_codec
+    - default: audio_codec
+      template_variables:
+        builder_level: season
+    - default: audio_codec
+      template_variables:
+        builder_level: episode
+    - default: language_count
+    - default: languages
+      template_variables:
+        vertical_offset: 383
+    - default: languages
+      template_variables:
+        builder_level: season
+    - default: languages
+      template_variables:
+        builder_level: episode
+    - default: languages
+      template_variables:
+        builder_level: episode
+        use_subtitles: true
+    - default: resolution
+    - default: resolution
+      template_variables:
+        builder_level: season
+    - default: resolution
+      template_variables:
+        builder_level: episode
+    - default: versions
+    - default: versions
+      template_variables:
+        builder_level: episode
+    - default: video_format
+    - default: video_format
+      template_variables:
+        builder_level: season
+    - default: video_format
+      template_variables:
+        builder_level: episode
+    - default: streaming
+    - default: studio
+    - default: network
+    - default: episode_info
+      template_variables:
+        builder_level: episode
+    - default: runtimes
+      template_variables:
+        builder_level: episode
 
 
 ####################################
@@ -251,136 +250,137 @@ templates:
 # /_/   \_\_| |_|_|_| |_| |_|\___| #
 #                                  #
 ####################################
-	  Anime:
-		collection_files:
-		- default: basic                 # This is a file within Kometa's defaults folder
-		- default: anilist
-		- default: myanimelist
-		- default: network
-		- default: tautulli
-		- default: universe
-		operations:
-		  mass_metadata_update:
-			ratings:
-			  audience: tmdb
-			  critic: imdb
-			  user: mdb_tomatoes
-			  episode_audience: tmdb
-			  episode_critic: imdb
-			  
-			  
-	############################################
-	#   ___                 _                  #
-	#  / _ \__   _____ _ __| | __ _ _   _ ___  #
-	# | | | \ \ / / _ \ '__| |/ _` | | | / __| #
-	# | |_| |\ V /  __/ |  | | (_| | |_| \__ \ #
-	#  \___/  \_/ \___|_|  |_|\__,_|\__, |___/ #
-	#                               |___/      #
-	############################################
-		overlay_files:
-		- default: ribbon
-		- default: status
-		  template_variables:
-			back_color_airing: '#016920FF'
-			back_color_returning: '#81007FFF'
-			back_color_canceled: '#B52222FF'
-			back_color_ended: '#000847FF'
-			horizontal_offset: 0
-			vertical_offset: 242
-		- default: audio_codec
-		- default: audio_codec
-		  template_variables:
-			builder_level: season
-		- default: audio_codec
-		  template_variables:
-			builder_level: episode
-		- default: language_count
-		- default: languages
-		  template_variables:
-			vertical_offset: 383
-		- default: languages
-		  template_variables:
-			builder_level: season
-		- default: languages
-		  template_variables:
-			builder_level: episode
-		- default: languages
-		  template_variables:
-			builder_level: episode
-			use_subtitles: true
-		- default: resolution
-		- default: resolution
-		  template_variables:
-			builder_level: season
-		- default: resolution
-		  template_variables:
-			builder_level: episode
-		- default: versions
-		- default: versions
-		  template_variables:
-			builder_level: episode
-		- default: video_format
-		- default: video_format
-		  template_variables:
-			builder_level: season
-		- default: video_format
-		  template_variables:
-			builder_level: episode
-		- default: streaming
-		- default: studio
-		- default: network
-		- default: episode_info
-		  template_variables:
-			builder_level: episode
-		- default: runtimes
-		  template_variables:
-			builder_level: episode
-		playlist_files:
-		- default: playlist
+    Anime:
+    collection_files:
+    - default: basic                 # This is a file within Kometa's defaults folder
+    - default: anilist
+    - default: myanimelist
+    - default: network
+    - default: tautulli
+    - default: universe
+    operations:
+      mass_metadata_update:
+        ratings:
+          audience: tmdb
+          critic: imdb
+          user: mdb_tomatoes
+          episode_audience: tmdb
+          episode_critic: imdb
+          
+          
+############################################
+#   ___                 _                  #
+#  / _ \__   _____ _ __| | __ _ _   _ ___  #
+# | | | \ \ / / _ \ '__| |/ _` | | | / __| #
+# | |_| |\ V /  __/ |  | | (_| | |_| \__ \ #
+#  \___/  \_/ \___|_|  |_|\__,_|\__, |___/ #
+#                               |___/      #
+############################################
+    overlay_files:
+    - default: ribbon
+    - default: status
+      template_variables:
+        back_color_airing: '#016920FF'
+        back_color_returning: '#81007FFF'
+        back_color_canceled: '#B52222FF'
+        back_color_ended: '#000847FF'
+        horizontal_offset: 0
+        vertical_offset: 242
+    - default: audio_codec
+    - default: audio_codec
+      template_variables:
+        builder_level: season
+    - default: audio_codec
+      template_variables:
+        builder_level: episode
+    - default: language_count
+    - default: languages
+      template_variables:
+        vertical_offset: 383
+    - default: languages
+      template_variables:
+        builder_level: season
+    - default: languages
+      template_variables:
+        builder_level: episode
+    - default: languages
+      template_variables:
+        builder_level: episode
+        use_subtitles: true
+    - default: resolution
+    - default: resolution
+      template_variables:
+        builder_level: season
+    - default: resolution
+      template_variables:
+        builder_level: episode
+    - default: versions
+    - default: versions
+      template_variables:
+        builder_level: episode
+    - default: video_format
+    - default: video_format
+      template_variables:
+        builder_level: season
+    - default: video_format
+      template_variables:
+        builder_level: episode
+    - default: streaming
+    - default: studio
+    - default: network
+    - default: episode_info
+      template_variables:
+        builder_level: episode
+    - default: runtimes
+      template_variables:
+        builder_level: episode
+    playlist_files:
+    - default: playlist
 #==================== Settings ====================#
-	settings:
-	  asset_depth: 0
-	  asset_folders: true
-	  auto_sort_hubs:
-	  cache: true
-	  cache_expiration: 60
-	  create_asset_folders: true
-	  default_collection_order: release
-	  delete_below_minimum: true
-	  delete_not_scheduled: false
-	  dimensional_asset_rename: false
-	  download_url_assets: false
-	  ignore_ids:
-	  ignore_imdb_ids:
-	  item_refresh_delay: 0
-	  minimum_items: 1
-	  missing_only_released: false
-	  only_filter_missing: false
-	  overlay_artwork_filetype: webp_lossy
-	  overlay_artwork_quality: 90
-	  playlist_exclude_users:
-	  playlist_report: false
-	  prioritize_assets: true
-	  run_again_delay: 2
-	  run_order:
-	  - operations
-	  - metadata
-	  - collections
-	  - overlays
-	  save_report: false
-	  show_asset_not_needed: true
-	  show_filtered: false
-	  show_missing: true
-	  show_missing_assets: true
-	  show_missing_episode_assets: false
-	  show_missing_season_assets: false
-	  show_options: true
-	  show_unconfigured: true
-	  show_unfiltered: false
-	  show_unmanaged: true
-	  sync_mode: append
-	  tvdb_language: eng
-	  verify_ssl: true
-	  custom_repo: https://raw.githubusercontent.com/Nobilit0/kometa/main/
-	  playlist_sync_to_users:
-  
+    settings:
+    asset_depth: 0
+    asset_directory:
+    - /opt/kometa-quickstart/config/assets/kryptonian
+    asset_folders: true
+    auto_sort_hubs:
+    cache: true
+    cache_expiration: 60
+    create_asset_folders: true
+    default_collection_order: release
+    delete_below_minimum: true
+    delete_not_scheduled: false
+    dimensional_asset_rename: false
+    download_url_assets: false
+    ignore_ids:
+    ignore_imdb_ids:
+    item_refresh_delay: 0
+    minimum_items: 1
+    missing_only_released: false
+    only_filter_missing: false
+    overlay_artwork_filetype: webp_lossy
+    overlay_artwork_quality: 90
+    playlist_exclude_users:
+    playlist_report: false
+    prioritize_assets: true
+    run_again_delay: 2
+    run_order:
+    - operations
+    - metadata
+    - collections
+    - overlays
+    save_report: false
+    show_asset_not_needed: true
+    show_filtered: false
+    show_missing: true
+    show_missing_assets: true
+    show_missing_episode_assets: false
+    show_missing_season_assets: false
+    show_options: true
+    show_unconfigured: true
+    show_unfiltered: false
+    show_unmanaged: true
+    sync_mode: append
+    tvdb_language: eng
+    verify_ssl: true
+    custom_repo: https://raw.githubusercontent.com/Nobilit0/kometa/main/
+    playlist_sync_to_users:  
