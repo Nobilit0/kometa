@@ -1,0 +1,74 @@
+external_templates:
+  git: PMM/collections
+
+templates:
+
+
+
+  # ============================================================
+  # New / Box Office
+  # ============================================================
+  NewBoxOffice:
+    default:
+      level: ""
+      sort_title_name: <<collection_name>>
+      radarr_add_missing_boxoffice: false
+      radarr_search_boxoffice: false
+    optional:
+      - poster_url
+
+    sort_title: 010__<<level>>_<<sort_title_name>>
+    sync_mode: sync
+    schedule:
+      - daily
+    visible_library: true
+    url_poster: <<poster_url>>
+
+    radarr_add_missing: <<radarr_add_missing_boxoffice>>
+    radarr_search: <<radarr_search_boxoffice>>
+
+
+  # ============================================================
+  # Chart / Trending
+  # ============================================================
+  ChartTrending:
+    default:
+      level: ""
+      sort_title_name: <<collection_name>>
+      radarr_add_missing_trending: false
+      radarr_search_trending: false
+    optional:
+      - poster_url
+
+    sort_title: 040__<<level>>_<<sort_title_name>>
+    sync_mode: sync
+    schedule:
+      - daily
+    visible_library: true
+    url_poster: <<poster_url>>
+
+    radarr_add_missing: <<radarr_add_missing_trending>>
+    radarr_search: <<radarr_search_trending>>
+
+
+  # ============================================================
+  # Chart / Everyone Watching
+  # ============================================================
+  ChartEveryone:
+    default:
+      level: ""
+      sort_title_name: <<collection_name>>
+      radarr_add_missing_everyone: false
+      radarr_search_everyone: false
+    optional:
+      - poster_url
+
+    sort_title: 040__<<level>>_<<sort_title_name>>
+    sync_mode: sync
+    schedule:
+      - daily
+    visible_library: true
+    url_poster: <<poster_url>>
+
+    radarr_add_missing: <<radarr_add_missing_everyone>>
+    radarr_search: <<radarr_search_everyone>>      
