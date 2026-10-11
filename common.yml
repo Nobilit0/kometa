@@ -1,8 +1,6 @@
 #==================== nobilit0 ====================#
-
-
-#==================== Libraries ====================#
-libraries:
+templates:
+  my_global_setup:
 #==================== Movies ====================#
   Movies:
     library_name: Movies
@@ -342,8 +340,6 @@ playlist_files:
 #==================== Settings ====================#
 settings:
   asset_depth: 0
-  asset_directory:
-  - /opt/kometa-quickstart/config/assets/kryptonian
   asset_folders: true
   auto_sort_hubs:
   cache: true
