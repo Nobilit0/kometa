@@ -1,5 +1,5 @@
 external_templates:
-  - repo: templates/collections
+  - repo: nwithan8/templates/collections
 
 templates:
   # Dynamic Collections Templates
