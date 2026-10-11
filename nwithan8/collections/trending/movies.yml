@@ -1,0 +1,80 @@
+external_templates:
+  - repo: templates/collections
+  - repo: templates/dynamic_collections
+  - file: /opt/kometa-quickstart/config/templates/collections
+
+
+collections:
+
+  # ============================================================
+  # Box Office
+  # ============================================================
+  "🍿 At The Box Office":
+    template:
+      - name: NewBoxOffice
+        level: "___"
+    summary: "Now playing on a screen near you"
+    url_poster: https://i.imgur.com/LRH1tFr.png
+
+    trakt_list:
+      - https://app.trakt.tv/users/skerr1q/lists/in-cinemas
+      - https://app.trakt.tv/users/wanzcool/lists/in-cinemas
+      - https://app.trakt.tv/users/eemedia/lists/in-cinemas
+      - https://app.trakt.tv/users/hitman860/lists/movies-in-cinemas
+      - https://app.trakt.tv/users/skerr1q/lists/in-cinemas
+
+    collection_order: release.desc
+    sync_mode: sync
+
+    visible_library: true
+    visible_home: true
+    visible_shared: true
+
+  # ============================================================
+  # Trending Online
+  # ============================================================
+    "📈 Trending Now":
+    template:
+      - name: ChartTrending
+        level: "___"
+
+    summary: "The hottest movies right now"
+    url_poster: https://i.imgur.com/6jZNd6W.png
+
+    trakt_chart:
+      chart: trending
+      limit: 30
+
+    collection_order: custom
+    sync_mode: sync
+
+    visible_library: true
+    visible_home: true
+    visible_shared: true
+
+  # ============================================================
+  # Trending on Plex
+  # ============================================================
+  "👀 What Everyone Is Watching":
+      template:
+      - name: ChartEveryone
+        level: "__"
+
+    summary: "What other subscribers are checking out"
+
+    libraries: "Movies"
+
+    url_poster: https://i.imgur.com/vyFG5o7.png
+
+    sync_mode: sync
+    collection_order: custom
+
+    tautulli_popular:
+      list_days: 30
+      list_size: 15
+      list_minimum: 2
+
+    visible_library: true
+    visible_home: true
+    visible_shared: true
+
