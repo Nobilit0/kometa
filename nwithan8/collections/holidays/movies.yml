@@ -1,6 +1,6 @@
 external_templates:
-  - repo: templates/collections
-  - repo: templates/dynamic_collections
+  - repo: nwithan8/templates/collections
+  - repo: nwithan8/templates/dynamic_collections
 
 collections:
   "🎊 New Year's Day":
