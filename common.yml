@@ -1,14 +1,8 @@
 #==================== nobilit0 ====================#
 templates:
 
-  # ========================================================
-  # MOVIE LIBRARY TEMPLATE
-  # ========================================================
   movie_setup:
     remove_overlays: false
-    metadata_files:
-      # - repo: collections/holidays/movies
-      #- file: config/nwithan8/collections/holidays/movies
     collection_files:
       - default: basic
       - default: imdb
@@ -51,9 +45,6 @@ templates:
       - default: streaming
       - default: studio
 
-  # ========================================================
-  # TV SHOW LIBRARY TEMPLATE
-  # ========================================================
   tv_setup:
     collection_files:
       - default: basic
@@ -132,9 +123,6 @@ templates:
         template_variables:
           builder_level: episode
 
-  # ========================================================
-  # ANIME LIBRARY TEMPLATE
-  # ========================================================
   anime_setup:
     collection_files:
       - default: basic
