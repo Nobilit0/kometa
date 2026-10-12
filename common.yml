@@ -1,202 +1,201 @@
-metadata:
-  #==================== nobilit0 ====================#
-  templates:
+#==================== nobilit0 ====================#
+templates:
 
-    movie_setup:
-      remove_overlays: false
-      collection_files:
-        - default: basic
-        - default: imdb
-          template_variables:
-            use_top: true
-            use_popular: true
-            use_lowest: true
-            radarr_add_missing_top: true
-            radarr_add_missing_popular: true
-            radarr_quality_top: HD-1080p
-            radarr_quality_popular: HD-1080p
-            radarr_search_top: false
-            radarr_search_popular: false
-        - repo: nwithan8/collections/holidays/movies
-        - repo: nobilit0/collections/trending/movies
-          template_variables:
-            radarr_add_missing_boxoffice: true
-            radarr_search_boxoffice: false
-            radarr_add_missing_trending: true
-            radarr_search_trending: false
-            radarr_add_missing_everyone: true
-            radarr_search_everyone: false
-        - default: resolution
-        - default: universe
-        - default: franchise
-        - default: based
-        - default: anilist
-        - default: studio
-        - default: tautulli
-      overlay_files:
-        - default: ribbon
-        - default: audio_codec
-        - default: languages
-          template_variables:
-            languages: [af, am, ar, sq, hy, eu, bn, bg, my, ca, zh, hr, cs, da, nl, en, eo, et, tl, fi, fr, gl, ka, de, el, gu, he, hi, hu, is, id, ga, it, ja, kn, km, ko, la, lv, lt, mk, ms, ml, mr, ne, no, fa, pl, pt, pa, ro, ru, sr, si, sk, sl, es, sw, sv, ta, te, th, tr, uk, ur, vi, cy, yo, zu]
-        - default: resolution
-        - default: runtimes
-        - default: versions
-        - default: video_format
-        - default: streaming
-        - default: studio
+  movie_setup:
+    remove_overlays: false
+    collection_files:
+      - default: basic
+      - default: imdb
+        template_variables:
+          use_top: true
+          use_popular: true
+          use_lowest: true
+          radarr_add_missing_top: true
+          radarr_add_missing_popular: true
+          radarr_quality_top: HD-1080p
+          radarr_quality_popular: HD-1080p
+          radarr_search_top: false
+          radarr_search_popular: false
+      - repo: nwithan8/collections/holidays/movies
+      - repo: nobilit0/collections/trending/movies
+        template_variables:
+          radarr_add_missing_boxoffice: true
+          radarr_search_boxoffice: false
+          radarr_add_missing_trending: true
+          radarr_search_trending: false
+          radarr_add_missing_everyone: true
+          radarr_search_everyone: false
+      - default: resolution
+      - default: universe
+      - default: franchise
+      - default: based
+      - default: anilist
+      - default: studio
+      - default: tautulli
+    overlay_files:
+      - default: ribbon
+      - default: audio_codec
+      - default: languages
+        template_variables:
+          languages: [af, am, ar, sq, hy, eu, bn, bg, my, ca, zh, hr, cs, da, nl, en, eo, et, tl, fi, fr, gl, ka, de, el, gu, he, hi, hu, is, id, ga, it, ja, kn, km, ko, la, lv, lt, mk, ms, ml, mr, ne, no, fa, pl, pt, pa, ro, ru, sr, si, sk, sl, es, sw, sv, ta, te, th, tr, uk, ur, vi, cy, yo, zu]
+      - default: resolution
+      - default: runtimes
+      - default: versions
+      - default: video_format
+      - default: streaming
+      - default: studio
 
-    tv_setup:
-      collection_files:
-        - default: basic
-        - default: imdb
-        - repo: nwithan8/collections/trending/shows
-        - default: universe
-        - default: franchise
-        - default: based
-        - default: network
-        - default: studio
-        - default: tautulli
-      operations:
-        mass_metadata_update:
-          ratings:
-            audience: tmdb
-            critic: imdb
-            user: mdb_tomatoes
-            episode_audience: tmdb
-            episode_critic: imdb
-      overlay_files:
-        - default: ribbon
-        - default: status
-          template_variables:
-            back_color_airing: '#016920FF'
-            back_color_returning: '#81007FFF'
-            back_color_canceled: '#B52222FF'
-            back_color_ended: '#000847FF'
-            horizontal_offset: 0
-            vertical_offset: 242
-        - default: audio_codec
-        - default: audio_codec
-          template_variables:
-            builder_level: season
-        - default: audio_codec
-          template_variables:
-            builder_level: episode
-        - default: language_count
-        - default: languages
-          template_variables:
-            vertical_offset: 383
-        - default: languages
-          template_variables:
-            builder_level: season
-        - default: languages
-          template_variables:
-            builder_level: episode
-        - default: languages
-          template_variables:
-            builder_level: episode
-            use_subtitles: true
-        - default: resolution
-        - default: resolution
-          template_variables:
-            builder_level: season
-        - default: resolution
-          template_variables:
-            builder_level: episode
-        - default: versions
-        - default: versions
-          template_variables:
-            builder_level: episode
-        - default: video_format
-        - default: video_format
-          template_variables:
-            builder_level: season
-        - default: video_format
-          template_variables:
-            builder_level: episode
-        - default: streaming
-        - default: studio
-        - default: network
-        - default: episode_info
-          template_variables:
-            builder_level: episode
-        - default: runtimes
-          template_variables:
-            builder_level: episode
+  tv_setup:
+    collection_files:
+      - default: basic
+      - default: imdb
+      - repo: nwithan8/collections/trending/shows
+      - default: universe
+      - default: franchise
+      - default: based
+      - default: network
+      - default: studio
+      - default: tautulli
+    operations:
+      mass_metadata_update:
+        ratings:
+          audience: tmdb
+          critic: imdb
+          user: mdb_tomatoes
+          episode_audience: tmdb
+          episode_critic: imdb
+    overlay_files:
+      - default: ribbon
+      - default: status
+        template_variables:
+          back_color_airing: '#016920FF'
+          back_color_returning: '#81007FFF'
+          back_color_canceled: '#B52222FF'
+          back_color_ended: '#000847FF'
+          horizontal_offset: 0
+          vertical_offset: 242
+      - default: audio_codec
+      - default: audio_codec
+        template_variables:
+          builder_level: season
+      - default: audio_codec
+        template_variables:
+          builder_level: episode
+      - default: language_count
+      - default: languages
+        template_variables:
+          vertical_offset: 383
+      - default: languages
+        template_variables:
+          builder_level: season
+      - default: languages
+        template_variables:
+          builder_level: episode
+      - default: languages
+        template_variables:
+          builder_level: episode
+          use_subtitles: true
+      - default: resolution
+      - default: resolution
+        template_variables:
+          builder_level: season
+      - default: resolution
+        template_variables:
+          builder_level: episode
+      - default: versions
+      - default: versions
+        template_variables:
+          builder_level: episode
+      - default: video_format
+      - default: video_format
+        template_variables:
+          builder_level: season
+      - default: video_format
+        template_variables:
+          builder_level: episode
+      - default: streaming
+      - default: studio
+      - default: network
+      - default: episode_info
+        template_variables:
+          builder_level: episode
+      - default: runtimes
+        template_variables:
+          builder_level: episode
 
-    anime_setup:
-      collection_files:
-        - default: basic
-        - default: anilist
-        - default: myanimelist
-        - default: network
-        - default: tautulli
-        - default: universe
-      operations:
-        mass_metadata_update:
-          ratings:
-            audience: tmdb
-            critic: imdb
-            user: mdb_tomatoes
-            episode_audience: tmdb
-            episode_critic: imdb
-      overlay_files:
-        - default: ribbon
-        - default: status
-          template_variables:
-            back_color_airing: '#016920FF'
-            back_color_returning: '#81007FFF'
-            back_color_canceled: '#B52222FF'
-            back_color_ended: '#000847FF'
-            horizontal_offset: 0
-            vertical_offset: 242
-        - default: audio_codec
-        - default: audio_codec
-          template_variables:
-            builder_level: season
-        - default: audio_codec
-          template_variables:
-            builder_level: episode
-        - default: language_count
-        - default: languages
-          template_variables:
-            vertical_offset: 383
-        - default: languages
-          template_variables:
-            builder_level: season
-        - default: languages
-          template_variables:
-            builder_level: episode
-        - default: languages
-          template_variables:
-            builder_level: episode
-            use_subtitles: true
-        - default: resolution
-        - default: resolution
-          template_variables:
-            builder_level: season
-        - default: resolution
-          template_variables:
-            builder_level: episode
-        - default: versions
-        - default: versions
-          template_variables:
-            builder_level: episode
-        - default: video_format
-        - default: video_format
-          template_variables:
-            builder_level: season
-        - default: video_format
-          template_variables:
-            builder_level: episode
-        - default: streaming
-        - default: studio
-        - default: network
-        - default: episode_info
-          template_variables:
-            builder_level: episode
-        - default: runtimes
-          template_variables:
-            builder_level: episode
-      playlist_files:
-        - default: playlist
+  anime_setup:
+    collection_files:
+      - default: basic
+      - default: anilist
+      - default: myanimelist
+      - default: network
+      - default: tautulli
+      - default: universe
+    operations:
+      mass_metadata_update:
+        ratings:
+          audience: tmdb
+          critic: imdb
+          user: mdb_tomatoes
+          episode_audience: tmdb
+          episode_critic: imdb
+    overlay_files:
+      - default: ribbon
+      - default: status
+        template_variables:
+          back_color_airing: '#016920FF'
+          back_color_returning: '#81007FFF'
+          back_color_canceled: '#B52222FF'
+          back_color_ended: '#000847FF'
+          horizontal_offset: 0
+          vertical_offset: 242
+      - default: audio_codec
+      - default: audio_codec
+        template_variables:
+          builder_level: season
+      - default: audio_codec
+        template_variables:
+          builder_level: episode
+      - default: language_count
+      - default: languages
+        template_variables:
+          vertical_offset: 383
+      - default: languages
+        template_variables:
+          builder_level: season
+      - default: languages
+        template_variables:
+          builder_level: episode
+      - default: languages
+        template_variables:
+          builder_level: episode
+          use_subtitles: true
+      - default: resolution
+      - default: resolution
+        template_variables:
+          builder_level: season
+      - default: resolution
+        template_variables:
+          builder_level: episode
+      - default: versions
+      - default: versions
+        template_variables:
+          builder_level: episode
+      - default: video_format
+      - default: video_format
+        template_variables:
+          builder_level: season
+      - default: video_format
+        template_variables:
+          builder_level: episode
+      - default: streaming
+      - default: studio
+      - default: network
+      - default: episode_info
+        template_variables:
+          builder_level: episode
+      - default: runtimes
+        template_variables:
+          builder_level: episode
+    playlist_files:
+      - default: playlist
