@@ -16,6 +16,7 @@ collections:
     url_poster: https://i.imgur.com/LRH1tFr.png
     mdblist_list:
       - https://mdblist.com/lists/mnoble927/in-theater
+      - https://mdblist.com/lists/nwithan8/in-cinemas-united-states
     collection_order: release.desc
     sync_mode: sync
     visible_library: true
