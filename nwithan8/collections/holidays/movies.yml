@@ -169,13 +169,8 @@ collections:
     imdb_list:
       - https://www.imdb.com/list/ls023118929/
       - https://www.imdb.com/list/ls000099714/
-    trakt_list:
-      - https://trakt.tv/users/29zombies/lists/halloween
-      - https://trakt.tv/users/galacticboy/lists/not-so-spooky-halloween
-      # - https://trakt.tv/users/kairbear08/lists/halloween
-      # - https://trakt.tv/users/mybicycle/lists/halloween
-      # - https://trakt.tv/users/jayinftl/lists/halloween
-      # - https://trakt.tv/users/roswellgeek/lists/halloween
+    mdblist_list:
+      - https://mdblist.com/lists/hdlists/halloween-movies-the-best-of-all-time
     tmdb_collection:
       - 185103    # Hotel Transylvania
       - 11716     # Addams Family
@@ -200,8 +195,8 @@ collections:
                 level: "+" }
     summary: "Don't be scared, it's just a movie."
     collection_order: random
-    trakt_list:
-      - https://app.trakt.tv/users/garycrawfordgc/lists/horror
+    mdblist_list:
+      - https://mdblist.com/lists/garycrawfordgc/horror
     url_poster: https://raw.githubusercontent.com/Kometa-Team/Default-Images/refs/heads/master/genre/Horror.jpg
 
   "🍬 Trick or Treat":
@@ -213,8 +208,8 @@ collections:
                 level: "++" }
     summary: "Trick or Treat! Safe for the whole family!"
     collection_order: random
-    trakt_list:
-      - https://trakt.tv/users/hdlists/lists/halloween-movies-for-kids
+    mdblist_list:
+      - https://mdblist.com/lists/hdlists/halloween-movies-for-kids
     url_poster: https://raw.githubusercontent.com/Nobilit0/kometa/refs/heads/main/images/trick_or_treat.jpg
    
   "🔪 Slasher":
@@ -226,8 +221,8 @@ collections:
                 level: "+" }
     summary: "He's right behind you!"
     collection_order: random
-    trakt_list:
-      - https://trakt.tv/users/hdlists/lists/80s-slasher-movies
+    mdblist_list:
+      - https://mdblist.com/lists/siskourso/slasher-movies
     url_poster: https://raw.githubusercontent.com/Kometa-Team/Default-Images/refs/heads/master/genre/Slasher.jpg
 
   "🗳️ Election Day":
