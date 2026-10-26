@@ -25,7 +25,7 @@ collections:
   # ============================================================
   # Trending Online
   # ============================================================
-    "📈 Trending Now":
+  "📈 Trending Now":
     template: { name: ChartTrending,
                 level: "___" }
     summary: "The hottest movies right now"
