@@ -10,18 +10,14 @@ collections:
   # Box Office
   # ============================================================
   "🍿 At The Box Office":
-    template:
-      - name: NewBoxOffice
-        level: "___"
+    template: { name: NewBoxOffice,
+                level: "___"}
     summary: "Now playing on a screen near you"
     url_poster: https://i.imgur.com/LRH1tFr.png
-
     mdblist_list:
       - https://mdblist.com/lists/mnoble927/in-theater
-
     collection_order: release.desc
     sync_mode: sync
-
     visible_library: true
     visible_home: true
     visible_shared: true
@@ -30,20 +26,17 @@ collections:
   # Trending Online
   # ============================================================
     "📈 Trending Now":
-    template:
-      - name: ChartTrending
-        level: "___"
-
+    template: { name: ChartTrending,
+                level: "___" }
     summary: "The hottest movies right now"
     url_poster: https://i.imgur.com/6jZNd6W.png
-
-    trakt_chart:
-      chart: trending
-      limit: 30
-
+    simkl_trending:
+      period: week
+      limit: 50
+    mdblist_list:
+      - https://mdblist.com/lists/official/movies/trending
     collection_order: custom
     sync_mode: sync
-
     visible_library: true
     visible_home: true
     visible_shared: true
@@ -52,25 +45,17 @@ collections:
   # Trending on Plex
   # ============================================================
   "👀 What Everyone Is Watching":
-      template:
-      - name: ChartEveryone
-        level: "__"
-
+    template: { name: ChartEveryone,
+                level: "__" }
     summary: "What other subscribers are checking out"
-
-    libraries: "Movies"
-
+    libraries: "Movies"  # Only consider movies in the Movies library (even when building this collection for 4K Movies)
     url_poster: https://i.imgur.com/vyFG5o7.png
-
     sync_mode: sync
     collection_order: custom
-
     tautulli_popular:
       list_days: 30
       list_size: 15
       list_minimum: 2
-
     visible_library: true
     visible_home: true
     visible_shared: true
-
