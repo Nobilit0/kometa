@@ -16,7 +16,7 @@ collections:
     summary: "Now playing on a screen near you"
     url_poster: https://i.imgur.com/LRH1tFr.png
 
-    trakt_list:
+    mdblist_list:
       - https://mdblist.com/lists/mnoble927/in-theater
 
     collection_order: release.desc
