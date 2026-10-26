@@ -17,11 +17,7 @@ collections:
     url_poster: https://i.imgur.com/LRH1tFr.png
 
     trakt_list:
-      - https://app.trakt.tv/users/skerr1q/lists/in-cinemas
-      - https://app.trakt.tv/users/wanzcool/lists/in-cinemas
-      - https://app.trakt.tv/users/eemedia/lists/in-cinemas
-      - https://app.trakt.tv/users/hitman860/lists/movies-in-cinemas
-      - https://app.trakt.tv/users/skerr1q/lists/in-cinemas
+      - https://mdblist.com/lists/mnoble927/in-theater
 
     collection_order: release.desc
     sync_mode: sync
