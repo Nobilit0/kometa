@@ -28,15 +28,15 @@ collections:
   # ============================================================
   "📈 Trending Now":
     template: { name: ChartTrending,
-                level: "___" }
+                level: "custom" }
     summary: "The hottest movies right now"
     url_poster: https://i.imgur.com/6jZNd6W.png
     simkl_trending:
       period: week
       limit: 50
-    mdblist_list:
-      - https://mdblist.com/lists/official/movies/trending
-    collection_order: custom.asc
+    #mdblist_list:
+    #  - https://mdblist.com/lists/official/movies/trending
+    collection_order: custom
     sync_mode: sync
     visible_library: true
     visible_home: true
@@ -52,7 +52,7 @@ collections:
     libraries: "Movies"  # Only consider movies in the Movies library (even when building this collection for 4K Movies)
     url_poster: https://i.imgur.com/vyFG5o7.png
     sync_mode: sync
-    collection_order: custom.asc
+    collection_order: custom
     tautulli_popular:
       list_days: 30
       list_size: 30
