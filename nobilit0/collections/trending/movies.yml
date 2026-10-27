@@ -11,13 +11,13 @@ collections:
   # ============================================================
   "🍿 At The Box Office":
     template: { name: NewBoxOffice,
-                level: "___"}
+                level: "custom"}
     summary: "Now playing on a screen near you"
     url_poster: https://i.imgur.com/LRH1tFr.png
     mdblist_list:
       - https://mdblist.com/lists/mnoble927/in-theater
       - https://mdblist.com/lists/nwithan8/in-cinemas-united-states
-    collection_order: release.desc
+    collection_order: release
     sync_mode: sync
     visible_library: true
     visible_home: true
@@ -47,16 +47,16 @@ collections:
   # ============================================================
   "👀 What Everyone Is Watching":
     template: { name: ChartEveryone,
-                level: "__" }
+                level: "custom" }
     summary: "What other subscribers are checking out"
-    libraries: "Movies"  # Only consider movies in the Movies library (even when building this collection for 4K Movies)
+    libraries: "Movies"
     url_poster: https://i.imgur.com/vyFG5o7.png
     sync_mode: sync
     collection_order: custom
-    tautulli_popular:
+    tautulli_watched:
       list_days: 30
       list_size: 30
-      list_minimum: 2
+      list_minimum: 1
     visible_library: true
     visible_home: true
     visible_shared: true
