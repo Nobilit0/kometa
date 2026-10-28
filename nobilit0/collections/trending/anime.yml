@@ -1,0 +1,43 @@
+external_templates:
+  - repo: nwithan8/templates/collections
+  - repo: nwithan8/templates/dynamic_collections
+  - repo: nobilit0/templates/collections
+
+
+collections:
+
+  # ============================================================
+  # Trending Online
+  # ============================================================
+  "📈 Trending Now Online":
+    template: { name: ChartTrending,
+                level: "custom" }
+    summary: "The hottest movies right now"
+    url_poster: https://i.imgur.com/6jZNd6W.png
+    simkl_trending:
+      period: week
+      limit: 50
+    collection_order: custom
+    sync_mode: sync
+    visible_library: true
+    visible_home: true
+    visible_shared: true
+
+  # ============================================================
+  # Trending on Plex
+  # ============================================================
+  "👀 What Everyone Is Watching":
+    template: { name: ChartEveryone,
+                level: "custom" }
+    summary: "What other subscribers are checking out"
+    libraries: "Anime"
+    url_poster: https://i.imgur.com/vyFG5o7.png
+    sync_mode: sync
+    collection_order: custom
+    tautulli_watched:
+      list_days: 30
+      list_size: 30
+      list_minimum: 1
+    visible_library: true
+    visible_home: true
+    visible_shared: true
