@@ -227,7 +227,7 @@ collections:
       - https://mdblist.com/lists/siskourso/slasher-movies
     url_poster: https://raw.githubusercontent.com/Kometa-Team/Default-Images/refs/heads/master/genre/Slasher.jpg
 
-    "🦃 Thanksgiving":
+  "🦃 Thanksgiving":
     schedule: range(11/01-12/01)
     visible_home: range(11/01-11/30)
     visible_shared: range(11/01-11/30)
@@ -243,7 +243,7 @@ collections:
       - https://mdblist.com/lists/pinkfrog/thanksgiving-movies
     url_poster: https://raw.githubusercontent.com/Kometa-Team/Default-Images/refs/heads/master/seasonal/thanksgiving.jpg
     
-    "🗳️ Election Day":
+  "🗳️ Election Day":
     schedule: range(10/25-11/12)
     visible_home: range(10/25-11/11)
     visible_shared: range(10/25-11/11)
