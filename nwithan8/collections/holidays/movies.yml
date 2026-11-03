@@ -4,7 +4,7 @@ external_templates:
 
 templates:
   Christmas_Advent_Calendar:
-    allowed_library_types: movie
+    run_definition: movie
     summary: Day <<key>> of the Christmas Advent Calendar
     sort_title: 061_Christmas_Advent_Calendar_<<key>> # 061_ is after 060_ for Holiday templates, before 065_ for Collection templates
     mdblist_list:
