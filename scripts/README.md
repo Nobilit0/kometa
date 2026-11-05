@@ -52,7 +52,7 @@ Your original poster backups in /opt/kometa-quickstart/config/overlays/ will rem
 The script also retains the previous behavior when --replace-invalid is omitted, so you can still run it without repairing existing files.
 
 
-## Optional Command - By default the --apply option will prompt and log AMBIGUOUS DESTINATION due to different versions of the same movie
+## Interactive Selection for Ambiguous Posters
 While the script is running it will display something like:
 AMBIGUOUS DESTINATION:
   /media/kometa-assets/Movie Title (1972)/poster.jpg
@@ -174,7 +174,3 @@ The output should help distinguish newly copied posters from repaired corrupted 
 ## A short note
 '--scan-visual-blank' uses an image-content heuristic. It can flag nearly uniform but intentionally designed artwork.
 
-To review suspicious images in a completed report:
-```bash
-grep -E 'suspected_blank_|invalid_existing' /media/backup/kometa-assets-applied.csv
-```
