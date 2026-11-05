@@ -1,6 +1,6 @@
 # Installation
 Replace your existing script with the downloaded version at:
-/kometa_restore_backup_assets.py
+/kometa_restore_backup_assets_interactive.py
 
 
 Install Pillow, which is required for detecting corrupted images:
