@@ -82,7 +82,7 @@ python3 /kometa_restore_backup_assets_interactive.py --apply --replace-invalid -
 ```
 
 Run this directly in an interactive terminal. If no terminal is available, ambiguous destinations are skipped rather than automatically chosen.
-4. Review visually suspicious posters
+3. Review visually suspicious posters
 The CSV will include suspected_blank_source and suspected_blank_existing records when the optional scan detects likely blank artwork. Those findings are for review; they do not trigger automatic replacement.
 
 You can extract them with:
@@ -133,8 +133,8 @@ find /media/backup/kometa-ambiguous-previews -maxdepth 1 -type f -name '*.jpg'
 The script prints each contact sheet's location; you must open the image separately to compare the posters visually.
 
 
-The current script explicitly skips suspicious blank source images rather than copying them. 
-GitHub
+When --scan-visual-blank is enabled, the script flags suspiciously blank source images and skips copying them. Existing valid artwork is preserved. 
+
 
 ### Optional: Include Small Images
 The script deliberately skips backup images under 10 KiB unless the user overrides that behavior.
