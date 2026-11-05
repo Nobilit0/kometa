@@ -1,11 +1,20 @@
 # Installation
 Replace your existing script with the downloaded version at:
 /kometa_restore_backup_assets_interactive.py
+```bash
+curl -fL --retry 3 -o /kometa_restore_backup_assets_interactive.py "https://raw.githubusercontent.com/Nobilit0/kometa/refs/heads/main/scripts/kometa_restore_backup_assets_interactive.py"
+```
 
-
-Install Pillow, which is required for detecting corrupted images:
+Install Pillow, which is required for detecting corrupted images. This installs the required dependency and verifies it:
 ```bash
 apt update && apt install -y python3-pil
+python3 -c "from PIL import Image; print('Pillow installed:', Image.__version__)"
+```
+
+Check the script for syntax errors and display all supported options:
+```bash
+python3 -m py_compile /kometa_restore_backup_assets_interactive.py
+python3 /kometa_restore_backup_assets_interactive.py --help
 ```
 
 Create the directory for preserving damaged artwork:
@@ -43,8 +52,8 @@ Your original poster backups in /opt/kometa-quickstart/config/overlays/ will rem
 The script also retains the previous behavior when --replace-invalid is omitted, so you can still run it without repairing existing files.
 
 
-## Optional Command - getting AMBIGUOUS DESTINATION in the log due to different versions of the same movie
-When running with --apply, the script will display something like:
+## Optional Command - By default the --apply option will prompt and log AMBIGUOUS DESTINATION due to different versions of the same movie
+While the script is running it will display something like:
 AMBIGUOUS DESTINATION:
   /media/kometa-assets/Movie Title (1972)/poster.jpg
 
@@ -82,3 +91,84 @@ grep 'suspected_blank_' /media/backup/kometa-assets-applied.csv
 ```
 
 The script retains /media/kometa-assets as its destination, preserves good existing artwork, and leaves Kometa's original backups untouched.
+
+If you prefer to not be prompted for the ambiguous destination, run the following:
+```bash
+python3 /kometa_restore_backup_assets_interactive.py --apply --no-prompt-ambiguous --report /media/backup/kometa-assets-applied.csv
+```
+This skips ambiguous destinations instead of prompting you to choose a poster.
+
+It is useful for scheduled jobs or unattended execution.
+
+
+
+## Other optional commands
+
+This is especially useful when you want to fix only Movies without reprocessing all three libraries.
+
+Movies only:
+```bash
+python3 /kometa_restore_backup_assets_interactive.py --library Movies --apply --report /media/backup/kometa-movies.csv
+```
+
+TV Shows only:
+```bash
+python3 /kometa_restore_backup_assets_interactive.py --library "TV Shows" --apply --report /media/backup/kometa-tv.csv
+```
+
+Anime only:
+```bash
+python3 /kometa_restore_backup_assets_interactive.py --library Anime --apply --report /media/backup/kometa-anime.csv
+```
+
+You can also repeat --library to process selected libraries together.
+
+
+The script also generates image contact sheets. Run this command to locate them:
+```bash
+find /media/backup/kometa-ambiguous-previews -maxdepth 1 -type f -name '*.jpg'
+```
+The script prints each contact sheet's location; you must open the image separately to compare the posters visually.
+
+
+The current script explicitly skips suspicious blank source images rather than copying them. 
+GitHub
+
+### Add the missing --include-small option
+The script deliberately skips backup images under 10 KiB unless the user overrides that behavior.
+
+Add this optional command:
+```bash
+python3 /kometa_restore_backup_assets_interactive.py --include-small --report /media/backup/kometa-small-preview.csv
+```
+
+This allows small backup images to be considered for copying. It does not mean they are valid or appropriate artwork, so it is recommended to preview the results before using --apply.
+
+
+### Add a final verification section
+After the bulk copy or repair, these commands will help confirm that the operation succeeded:
+```bash
+du -sh /media/kometa-assets
+find /media/kometa-assets -type f | wc -l
+```
+
+Check the report for processing errors:
+```bash
+grep ',error$' /media/backup/kometa-assets-applied.csv
+```
+
+And inspect successful operations:
+```bash
+grep -E ',(copied|replaced_invalid)$' /media/backup/kometa-assets-applied.csv | head -30
+```
+
+The output should help distinguish newly copied posters from repaired corrupted ones.
+
+
+## A short note
+'--scan-visual-blank' uses an image-content heuristic. It can flag nearly uniform but intentionally designed artwork.
+
+To review suspicious images in a completed report:
+```bash
+grep -E 'suspected_blank_|invalid_existing' /media/backup/kometa-assets-applied.csv
+```
