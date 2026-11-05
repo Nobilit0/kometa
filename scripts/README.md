@@ -23,8 +23,8 @@ mkdir -p /media/backup/kometa-invalid-assets
 ```
 
 Make sure /media/backup and /media/kometa-assets are mounted on the intended storage.
-## Basic copy of assets to your working directory
-
+## Copy Original Posters to Kometa Assets
+### Stop any active Kometa overlay processing first, then run:
 1. Preview all libraries in Plex
 ```bash
 python3 /kometa_restore_backup_assets_interactive.py --report /media/backup/kometa-assets-preview.csv
@@ -42,7 +42,7 @@ python3 /kometa_restore_backup_assets_interactive.py --replace-invalid --report 
 
 The results will distinguish newly eligible artwork from corrupted artwork that can be repaired.
 2. Apply the repairs
-Stop any active Kometa overlay processing first, then run:
+
 ```bash
 python3 /kometa_restore_backup_assets_interactive.py --apply --replace-invalid --invalid-backup-dir /media/backup/kometa-invalid-assets --report /media/backup/kometa-assets-applied.csv
 ```
@@ -100,7 +100,9 @@ This skips ambiguous destinations instead of prompting you to choose a poster.
 
 It is useful for scheduled jobs or unattended execution.
 
-
+### NOTE:
+Visual blank detection only inspects artwork associated with mapped Plex items. Images flagged as suspicious are not automatically repaired. 
+Valid existing posters are preserved, even when multiple backup candidates are available.
 
 ## Other optional commands
 
@@ -134,7 +136,7 @@ The script prints each contact sheet's location; you must open the image separat
 The current script explicitly skips suspicious blank source images rather than copying them. 
 GitHub
 
-### Add the missing --include-small option
+### Optional: Include Small Images
 The script deliberately skips backup images under 10 KiB unless the user overrides that behavior.
 
 Add this optional command:
@@ -145,7 +147,7 @@ python3 /kometa_restore_backup_assets_interactive.py --include-small --report /m
 This allows small backup images to be considered for copying. It does not mean they are valid or appropriate artwork, so it is recommended to preview the results before using --apply.
 
 
-### Add a final verification section
+### Final Verification
 After the bulk copy or repair, these commands will help confirm that the operation succeeded:
 ```bash
 du -sh /media/kometa-assets
@@ -154,14 +156,18 @@ find /media/kometa-assets -type f | wc -l
 
 Check the report for processing errors:
 ```bash
-grep ',error$' /media/backup/kometa-assets-applied.csv
+sed 's/\r$//' /media/backup/kometa-assets-applied.csv | grep -E ',error$'
 ```
 
 And inspect successful operations:
 ```bash
-grep -E ',(copied|replaced_invalid)$' /media/backup/kometa-assets-applied.csv | head -30
+sed 's/\r$//' /media/backup/kometa-assets-applied.csv | grep -E ',(copied|replaced_invalid)$' | head -30
 ```
 
+Check visually suspicious images:
+```bash
+grep -E 'suspected_blank_|invalid_existing' /media/backup/kometa-assets-applied.csv
+```
 The output should help distinguish newly copied posters from repaired corrupted ones.
 
 
