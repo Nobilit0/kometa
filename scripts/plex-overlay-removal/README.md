@@ -30,9 +30,10 @@ Step 1 — Preview the overlay cleanup
 ```
 
 It will display results such as:
-- DRY RESTORE     [show:12345] Anime Title <- 12345.jpg
-- SKIP no backup  [show:354568] Another Anime Title
-
+```text
+DRY RESTORE     [show:12345] Anime Title <- 12345.jpg
+SKIP no backup  [show:354568] Another Anime Title
+```
 
 Nothing changes during the preview.
 Step 2 — Restore the available backups
