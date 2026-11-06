@@ -118,3 +118,11 @@ backup --library "Anime" --show "Attack on Titan" --season 1 --episode 3 --apply
 backup --library "Anime" --rating-key 354568 --apply
 ```
 This workflow gives you the two behaviors you want: a cleanup that continues past missing originals, followed by a fresh backup of the posters you've selected in Plex.
+
+## Note
+
+The following can be used to override the overlay label in Plex to scan all the files, without including this the poster will be ignored.
+
+```bash
+--include-labeled
+```
