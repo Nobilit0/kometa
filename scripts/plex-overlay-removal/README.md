@@ -103,17 +103,17 @@ Finally, the backup mode saves the currently selected artwork from Plex, not eve
 If any of the images fail to backup, it will show as an error in the logs first column.  The following commands can be used after the script name to single out a show, season, or episode that needs attention.
 
 
-# Back up one show's poster
+### Back up one show's poster
 ```bash
 backup --library "Anime" --show "Attack on Titan" --apply
 ```
 
-# Back up one episode thumbnail
+### Back up one episode thumbnail
 ```bash
 backup --library "Anime" --show "Attack on Titan" --season 1 --episode 3 --apply
 ```
 
-# Retry a specific Plex metadata ID
+### Retry a specific Plex metadata ID
 ```bash
 backup --library "Anime" --rating-key 354568 --apply
 ```
