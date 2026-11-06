@@ -27,7 +27,9 @@ Use the command to download the file to your desired folder; such as "/opt/komet
 ```bash
 wget -P /opt/kometa-quickstart/config/ https://raw.githubusercontent.com/Nobilit0/kometa/refs/heads/main/scripts/plex-overlay-removal/kometa_overlay_preserve.py
 ```
-
+Open the file and update the following sections with your configuration and remove the "#" to enable the setting:
+- DEFAULT_CONFIG
+- DEFAULT_OVERLAYS
 
 ### Fix 1. Restore Original Posters
 Step 1 — Preview the overlay cleanup
