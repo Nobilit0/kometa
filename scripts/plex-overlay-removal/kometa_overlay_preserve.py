@@ -8,6 +8,7 @@ items untouched during restore.  Dry-run is the default; use --apply to change.
 
 import argparse
 from collections import Counter
+from contextlib import redirect_stderr, redirect_stdout
 from datetime import datetime
 from io import BytesIO
 import os
@@ -19,11 +20,49 @@ import yaml
 from PIL import Image, UnidentifiedImageError
 from plexapi.server import PlexServer
 
-#DEFAULT_CONFIG = "/opt/kometa-quickstart/config/config.yml"
-#DEFAULT_OVERLAYS = "/opt/kometa-quickstart/config/overlays"
+DEFAULT_CONFIG = "/opt/kometa-quickstart/config/kryptonian.yml"
+DEFAULT_OVERLAYS = "/opt/kometa-quickstart/config/overlays"
 EXTENSIONS = (".png", ".jpg", ".webp")
 FORMAT_EXTENSION = {"PNG": ".png", "JPEG": ".jpg", "WEBP": ".webp"}
 MAX_IMAGE_BYTES = 25 * 1024 * 1024
+
+
+class TeeStream:
+    """Show progress in the terminal and copy it into the review log."""
+
+    def __init__(self, terminal, report):
+        self.terminal = terminal
+        self.report = report
+
+    def write(self, data):
+        self.terminal.write(data)
+        self.report.write(data)
+        self.report.flush()
+
+    def flush(self):
+        self.terminal.flush()
+        self.report.flush()
+
+    def isatty(self):
+        return self.terminal.isatty()
+
+
+def report_path(args):
+    if args.report:
+        return Path(args.report).expanduser().resolve()
+    # Keep logs outside overlays: Kometa should not mistake them for artwork.
+    directory = Path(args.overlays).expanduser().resolve().parent / "reports"
+    stamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
+    return directory / f"kometa-overlay-preserve-{args.mode}-{stamp}.log"
+
+
+def print_labeled_skipped(items):
+    print("\n=== labeled_skipped: Overlay-labeled posters excluded from backup ===")
+    if not items:
+        print("None")
+    for number, (library, kind, key, name) in enumerate(items, start=1):
+        print(f"{number:>4}. [{library} / {kind}:{key}] {name}")
+    print(f"Total labeled_skipped: {len(items)}")
 
 
 def args_parse(argv=None):
@@ -39,6 +78,7 @@ def args_parse(argv=None):
     p.add_argument("--include-labeled", action="store_true",
                    help="Backup mode: INCLUDE items still tagged Overlay (risk of saving overlaid images)")
     p.add_argument("--only-missing", action="store_true", help="Backup mode: save only items with no prior backup (default unless --overwrite)")
+    p.add_argument("--report", help="Review log file (default: a timestamped file in config/reports/)")
     return p.parse_args(argv)
 
 
@@ -161,7 +201,7 @@ def restore(section, types, folder, apply, counts):
                 print(f"ERROR           [{kind}:{key}] {name}: {type(exc).__name__}: {exc}", file=sys.stderr)
 
 
-def backup(plex, token, section, types, folder, apply, overwrite, include_labeled, counts, archive_dir):
+def backup(plex, token, section, types, folder, apply, overwrite, include_labeled, counts, archive_dir, labeled_skipped):
     for kind in types:
         print(f"Scanning {section.title} / {kind} for selected Plex posters...", flush=True)
         for item in section.all(libtype=kind):
@@ -173,6 +213,7 @@ def backup(plex, token, section, types, folder, apply, overwrite, include_labele
                 labels = {label.tag for label in getattr(item, "labels", [])}
                 if "Overlay" in labels and not include_labeled:
                     counts["labeled_skipped"] += 1
+                    labeled_skipped.append((section.title, kind, key, name))
                     print(f"SKIP Overlay label [{kind}:{key}] {name}")
                     continue
                 previous = [p for p in backup_candidates(folder, key) if p.is_file()]
@@ -208,38 +249,59 @@ def backup(plex, token, section, types, folder, apply, overwrite, include_labele
                 print(f"ERROR           [{kind}:{key}] {name}: {type(exc).__name__}: {exc}", file=sys.stderr)
 
 
-def main(argv=None):
-    a = args_parse(argv)
-    if a.mode == "restore" and (a.overwrite or a.include_labeled or a.only_missing):
-        raise SystemExit("Backup-only flags cannot be used with restore mode")
-    if a.overwrite and a.only_missing:
-        raise SystemExit("Use either --overwrite or --only-missing, not both")
-    base = Path(a.overlays).expanduser().resolve()
-    plex, token = get_plex(a.config)
+def run(args, labeled_skipped):
+    if args.mode == "restore" and (args.overwrite or args.include_labeled or args.only_missing):
+        raise ValueError("Backup-only flags cannot be used with restore mode")
+    if args.overwrite and args.only_missing:
+        raise ValueError("Use either --overwrite or --only-missing, not both")
+    base = Path(args.overlays).expanduser().resolve()
+    plex, token = get_plex(args.config)
     counts = Counter()
     archive_dir = base / "_previous_clean_posters" / datetime.now().strftime("%Y%m%d_%H%M%S")
-    print(f"Mode: {a.mode} | {'APPLY' if a.apply else 'DRY RUN'} | Root: {base}")
-    if a.mode == "backup" and a.include_labeled:
+    print(f"Mode: {args.mode} | {'APPLY' if args.apply else 'DRY RUN'} | Root: {base}")
+    if args.mode == "backup" and args.include_labeled:
         print("WARNING: --include-labeled can save posters with burned-in Kometa overlays!")
-    for library in list(dict.fromkeys(a.library)):
+    for library in list(dict.fromkeys(args.library)):
         section = plex.library.section(library)
-        types = library_types(section, a.types)
+        types = library_types(section, args.types)
         folder = base / f"{library} Original Posters"
         print(f"\n### {library} ({', '.join(types)}) ###")
-        if a.mode == "restore":
-            restore(section, types, folder, a.apply, counts)
+        if args.mode == "restore":
+            restore(section, types, folder, args.apply, counts)
         else:
-            backup(plex, token, section, types, folder, a.apply, a.overwrite, a.include_labeled, counts, archive_dir)
+            backup(plex, token, section, types, folder, args.apply, args.overwrite,
+                   args.include_labeled, counts, archive_dir, labeled_skipped)
+    if args.mode == "backup":
+        print_labeled_skipped(labeled_skipped)
     print("\nSummary: " + (", ".join(f"{k}={v}" for k, v in sorted(counts.items())) or "nothing found"))
     print("No poster backup was deleted during restore.")
-    if counts["failed"]:
-        return 1
-    return 0
+    return 1 if counts["failed"] else 0
+
+
+def main(argv=None):
+    args = args_parse(argv)
+    path = report_path(args)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    # Create a new private report each time; never silently overwrite an old log.
+    fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+    with os.fdopen(fd, "w", encoding="utf-8", buffering=1) as report:
+        with redirect_stdout(TeeStream(sys.stdout, report)), redirect_stderr(TeeStream(sys.stderr, report)):
+            print(f"Review report: {path}", flush=True)
+            labeled_skipped = []
+            try:
+                status = run(args, labeled_skipped)
+            except Exception as exc:
+                print(f"FATAL: {type(exc).__name__}: {exc}", file=sys.stderr)
+                if args.mode == "backup":
+                    print_labeled_skipped(labeled_skipped)
+                status = 2
+            print(f"\nReview log saved: {path}", flush=True)
+            return status
 
 
 if __name__ == "__main__":
     try:
         sys.exit(main())
-    except Exception as e:
-        print(f"FATAL: {type(e).__name__}: {e}", file=sys.stderr)
+    except Exception as exc:
+        print(f"FATAL: {type(exc).__name__}: {exc}", file=sys.stderr)
         sys.exit(2)
