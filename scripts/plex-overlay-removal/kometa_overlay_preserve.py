@@ -19,8 +19,8 @@ import yaml
 from PIL import Image, UnidentifiedImageError
 from plexapi.server import PlexServer
 
-DEFAULT_CONFIG = "/opt/kometa-quickstart/config/kryptonian.yml"
-DEFAULT_OVERLAYS = "/opt/kometa-quickstart/config/overlays"
+#DEFAULT_CONFIG = ""
+#DEFAULT_OVERLAYS = ""
 EXTENSIONS = (".png", ".jpg", ".webp")
 FORMAT_EXTENSION = {"PNG": ".png", "JPEG": ".jpg", "WEBP": ".webp"}
 MAX_IMAGE_BYTES = 25 * 1024 * 1024
