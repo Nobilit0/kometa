@@ -62,6 +62,8 @@ Step 1 — Update the missing posters in Plex
 For items skipped because their backups are missing, select clean artwork manually in Plex. Once the poster is correct, remove that item's Overlay label in Plex.
 
 This is necessary because the script deliberately avoids treating still-labeled posters as clean originals.
+
+
 Step 2 — Download all updated Plex posters
 First preview:
 ```bash
