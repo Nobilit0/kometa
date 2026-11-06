@@ -68,7 +68,7 @@ First preview:
 /opt/kometa/.venv/bin/python \
   /opt/kometa-quickstart/config/kometa_overlay_preserve.py \
   backup --library "Anime" --overwrite
-```bash
+```
 
 Then download:
 ```bash
