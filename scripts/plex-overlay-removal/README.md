@@ -1,8 +1,16 @@
 # Background
 The purpose of this is to remove the overlays from plex while there are missing original files that Kometa is unable to find resulting in the built-in commands to fail and exit the script with a 502 error pointing to the issue.
+```text
+(502) bad_gateway; (redacted)/library/metadata/354568/posters?url=(redacted)%2Flibrary%2Fmetadata%2F354568%2Ffile%3Furl%3Dmetadata%253A%252F%252Fposters%252Ftv%252Eplex%252Eagents%252Eseries_2e7e921885beeeaa5f07d68e4512307a4711f898%26X-Plex-Token%3D(redacted) <html><head><title>Bad Gateway</title></head><body><h1>502 Bad Gateway</h1></body></html>
+```
 
-
-
+The utility will:
+- Restore available clean posters to Plex.
+- Skip missing or invalid backups.
+- Continue if an individual poster upload fails.
+- Remove the Overlay label only after a successful poster upload.
+- Preserve all existing backup files, including restored ones.
+By default, the utility also handles season posters and episode thumbnails in TV libraries.
 
 # 2 Fold Fix
 
@@ -45,13 +53,7 @@ Step 2 — Restore the available backups
   restore --library "Anime" --apply
 ```
 
-The utility will:
-- Restore available clean posters to Plex.
-- Skip missing or invalid backups.
-- Continue if an individual poster upload fails.
-- Remove the Overlay label only after a successful poster upload.
-- Preserve all existing backup files, including restored ones.
-By default, the utility also handles season posters and episode thumbnails in TV libraries.
+
 
 ### Fix 2. Create a Backup of Original Posters
 Step 1 — Update the missing posters in Plex
