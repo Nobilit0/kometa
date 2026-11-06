@@ -36,6 +36,8 @@ SKIP no backup  [show:354568] Another Anime Title
 ```
 
 Nothing changes during the preview.
+
+
 Step 2 — Restore the available backups
 ```bash
 /opt/kometa/.venv/bin/python \
