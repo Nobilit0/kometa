@@ -12,7 +12,7 @@ The utility will:
 - Preserve all existing backup files, including restored ones.
 By default, the utility also handles season posters and episode thumbnails in TV libraries.
 
-# 2 Fold Fix
+# 2-Fold Fix
 
 1. Restore overlays: 
 	1. Restore posters only when an existing backup is found under /opt/kometa-quickstart/config/overlays/. 
