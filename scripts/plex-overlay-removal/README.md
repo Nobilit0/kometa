@@ -15,8 +15,11 @@ The purpose of this is to remove the overlays from plex while there are missing 
 
 ## Install and Usage commands
 
-Copy it to:
-/opt/kometa-quickstart/config/kometa_overlay_preserve.py
+Use the command to download the file to your desired folder; such as "/opt/kometa-quickstart/config/"
+```bash
+wget -P /opt/kometa-quickstart/config/ https://raw.githubusercontent.com/Nobilit0/kometa/refs/heads/main/scripts/plex-overlay-removal/kometa_overlay_preserve.py
+```
+
 
 ### Fix 1. Restore Original Posters
 Step 1 — Preview the overlay cleanup
@@ -27,8 +30,8 @@ Step 1 — Preview the overlay cleanup
 ```
 
 It will display results such as:
-DRY RESTORE     [show:12345] Anime Title <- 12345.jpg
-SKIP no backup  [show:354568] Another Anime Title
+- DRY RESTORE     [show:12345] Anime Title <- 12345.jpg
+- SKIP no backup  [show:354568] Another Anime Title
 
 
 Nothing changes during the preview.
