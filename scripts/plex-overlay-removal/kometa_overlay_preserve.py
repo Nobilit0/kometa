@@ -8,7 +8,6 @@ items untouched during restore.  Dry-run is the default; use --apply to change.
 
 import argparse
 from collections import Counter
-from contextlib import redirect_stderr, redirect_stdout
 from datetime import datetime
 from io import BytesIO
 import os
@@ -27,46 +26,19 @@ FORMAT_EXTENSION = {"PNG": ".png", "JPEG": ".jpg", "WEBP": ".webp"}
 MAX_IMAGE_BYTES = 25 * 1024 * 1024
 
 
-class TeeStream:
-    """Show progress in the terminal and copy it into the review log."""
-
-    def __init__(self, terminal, report):
-        self.terminal = terminal
-        self.report = report
-
-    def write(self, data):
-        self.terminal.write(data)
-        self.report.write(data)
-        self.report.flush()
-
-    def flush(self):
-        self.terminal.flush()
-        self.report.flush()
-
-    def isatty(self):
-        return self.terminal.isatty()
-
-
-def report_path(args):
-    if args.report:
-        return Path(args.report).expanduser().resolve()
-    # Keep logs outside overlays: Kometa should not mistake them for artwork.
-    directory = Path(args.overlays).expanduser().resolve().parent / "reports"
-    stamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
-    return directory / f"kometa-overlay-preserve-{args.mode}-{stamp}.log"
-
-
-def print_labeled_skipped(items):
-    print("\n=== labeled_skipped: Overlay-labeled posters excluded from backup ===")
-    if not items:
-        print("None")
-    for number, (library, kind, key, name) in enumerate(items, start=1):
-        print(f"{number:>4}. [{library} / {kind}:{key}] {name}")
-    print(f"Total labeled_skipped: {len(items)}")
-
-
 def args_parse(argv=None):
-    p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    p = argparse.ArgumentParser(
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=(
+            'Examples:\n'
+            '  backup --library Anime --show "Attack on Titan" --apply\n'
+            '  backup --library Anime --show "Attack on Titan" --season 1 --episode 3 --apply\n'
+            '  backup --library Anime --rating-key 354568 --apply\n'
+            '  backup --library Anime --rating-key 354568 --include-labeled --overwrite --apply\n'
+            'Omit --apply to preview. Only use --include-labeled on artwork confirmed clean in Plex.'
+        ),
+    )
     p.add_argument("mode", choices=("restore", "backup"), help="restore saved clean artwork, or back up current Plex posters")
     p.add_argument("--config", default=DEFAULT_CONFIG, help="Kometa YAML configuration")
     p.add_argument("--overlays", default=DEFAULT_OVERLAYS, help="Kometa overlays folder")
@@ -78,7 +50,10 @@ def args_parse(argv=None):
     p.add_argument("--include-labeled", action="store_true",
                    help="Backup mode: INCLUDE items still tagged Overlay (risk of saving overlaid images)")
     p.add_argument("--only-missing", action="store_true", help="Backup mode: save only items with no prior backup (default unless --overwrite)")
-    p.add_argument("--report", help="Review log file (default: a timestamped file in config/reports/)")
+    p.add_argument("--show", help="Target only the exact title of one TV show (the show poster by default)")
+    p.add_argument("--season", type=int, help="With --show, target this season's poster; use 0 for Specials")
+    p.add_argument("--episode", type=int, help="With --show --season, target this episode's thumbnail")
+    p.add_argument("--rating-key", type=int, help="Target exactly one Plex metadata/rating key, e.g. 354568")
     return p.parse_args(argv)
 
 
@@ -103,6 +78,42 @@ def library_types(section, requested):
             raise RuntimeError(f"Media types {sorted(invalid)} do not fit library {section.title} ({section.type})")
         return list(dict.fromkeys(requested))
     return valid
+
+
+def selected_item(plex, section, options):
+    """Return exactly one show, season, episode, or Plex ID; None for full scans."""
+    if options.rating_key is not None:
+        item = plex.fetchItem(options.rating_key)
+        item.reload()
+        if item.section().key != section.key:
+            raise RuntimeError(f"Rating key {options.rating_key} does not belong to library {section.title!r}")
+        if item.type not in library_types(section, None):
+            raise RuntimeError(f"Rating key {options.rating_key} is a {item.type}, not supported by this library")
+        return item
+    if options.show is None:
+        return None
+    if section.type != "show":
+        raise RuntimeError("--show requires a Plex TV library")
+    matches = [item for item in section.search(title=options.show, libtype="show")
+               if item.title.strip().casefold() == options.show.strip().casefold()]
+    if not matches:
+        raise RuntimeError(f"Show {options.show!r} not found as an exact title in {section.title!r}; use --rating-key instead")
+    if len(matches) != 1:
+        raise RuntimeError(f"Multiple shows named {options.show!r}; use --rating-key to select the exact item")
+    show = matches[0]
+    if options.episode is not None:
+        return show.episode(season=options.season, episode=options.episode)
+    if options.season is not None:
+        return show.season(season=options.season)
+    return show
+
+
+def batches(section, types, mode, selected):
+    if selected is not None:
+        yield selected.type, [selected]
+    else:
+        for kind in types:
+            yield kind, section.search(libtype=kind, label="Overlay") if mode == "restore" else section.all(libtype=kind)
 
 
 def backup_candidates(folder, key):
@@ -170,13 +181,18 @@ def save_image(path, data):
         tmp.unlink(missing_ok=True)
 
 
-def restore(section, types, folder, apply, counts):
+def restore(section, types, folder, apply, counts, selected=None):
     if not folder.is_dir():
         print(f"WARN: Backup directory does not exist: {folder}")
-    for kind in types:
-        # The same type-filtered Overlay label search Kometa uses.
+    for kind, items in batches(section, types, "restore", selected):
         print(f"Scanning {section.title} / {kind} with Overlay labels...", flush=True)
-        for item in section.search(libtype=kind, label="Overlay"):
+        for item in items:
+            if selected is not None:
+                item.reload()
+                if "Overlay" not in {label.tag for label in getattr(item, "labels", [])}:
+                    counts["not_labeled"] += 1
+                    print(f"SKIP no Overlay label [{kind}:{item.ratingKey}] {title(item)}")
+                    continue
             key = str(item.ratingKey)
             name = title(item)
             path = existing_backup(folder, key)
@@ -201,10 +217,10 @@ def restore(section, types, folder, apply, counts):
                 print(f"ERROR           [{kind}:{key}] {name}: {type(exc).__name__}: {exc}", file=sys.stderr)
 
 
-def backup(plex, token, section, types, folder, apply, overwrite, include_labeled, counts, archive_dir, labeled_skipped):
-    for kind in types:
+def backup(plex, token, section, types, folder, apply, overwrite, include_labeled, counts, archive_dir, selected=None):
+    for kind, items in batches(section, types, "backup", selected):
         print(f"Scanning {section.title} / {kind} for selected Plex posters...", flush=True)
-        for item in section.all(libtype=kind):
+        for item in items:
             key = str(item.ratingKey)
             name = title(item)
             try:
@@ -213,7 +229,6 @@ def backup(plex, token, section, types, folder, apply, overwrite, include_labele
                 labels = {label.tag for label in getattr(item, "labels", [])}
                 if "Overlay" in labels and not include_labeled:
                     counts["labeled_skipped"] += 1
-                    labeled_skipped.append((section.title, kind, key, name))
                     print(f"SKIP Overlay label [{kind}:{key}] {name}")
                     continue
                 previous = [p for p in backup_candidates(folder, key) if p.is_file()]
@@ -249,59 +264,55 @@ def backup(plex, token, section, types, folder, apply, overwrite, include_labele
                 print(f"ERROR           [{kind}:{key}] {name}: {type(exc).__name__}: {exc}", file=sys.stderr)
 
 
-def run(args, labeled_skipped):
-    if args.mode == "restore" and (args.overwrite or args.include_labeled or args.only_missing):
-        raise ValueError("Backup-only flags cannot be used with restore mode")
-    if args.overwrite and args.only_missing:
-        raise ValueError("Use either --overwrite or --only-missing, not both")
-    base = Path(args.overlays).expanduser().resolve()
-    plex, token = get_plex(args.config)
+def main(argv=None):
+    a = args_parse(argv)
+    if a.mode == "restore" and (a.overwrite or a.include_labeled or a.only_missing):
+        raise SystemExit("Backup-only flags cannot be used with restore mode")
+    if a.overwrite and a.only_missing:
+        raise SystemExit("Use either --overwrite or --only-missing, not both")
+    targeted = any(v is not None for v in (a.show, a.season, a.episode, a.rating_key))
+    if a.rating_key is not None and (a.rating_key <= 0 or any(v is not None for v in (a.show, a.season, a.episode))):
+        raise SystemExit("--rating-key must be positive and cannot be combined with --show, --season or --episode")
+    if a.episode is not None and a.season is None:
+        raise SystemExit("--episode requires --season and --show")
+    if a.season is not None and a.show is None:
+        raise SystemExit("--season requires --show")
+    if ((a.season is not None and a.season < 0) or
+            (a.episode is not None and a.episode < 0)):
+        raise SystemExit("--season and --episode must not be negative")
+    if targeted and len(set(a.library)) != 1:
+        raise SystemExit("Item selection requires exactly one --library")
+    if targeted and a.types:
+        raise SystemExit("Do not combine --types with --show/--season/--episode or --rating-key")
+    base = Path(a.overlays).expanduser().resolve()
+    plex, token = get_plex(a.config)
     counts = Counter()
     archive_dir = base / "_previous_clean_posters" / datetime.now().strftime("%Y%m%d_%H%M%S")
-    print(f"Mode: {args.mode} | {'APPLY' if args.apply else 'DRY RUN'} | Root: {base}")
-    if args.mode == "backup" and args.include_labeled:
+    print(f"Mode: {a.mode} | {'APPLY' if a.apply else 'DRY RUN'} | Root: {base}")
+    if a.mode == "backup" and a.include_labeled:
         print("WARNING: --include-labeled can save posters with burned-in Kometa overlays!")
-    for library in list(dict.fromkeys(args.library)):
+    for library in list(dict.fromkeys(a.library)):
         section = plex.library.section(library)
-        types = library_types(section, args.types)
+        types = library_types(section, a.types)
         folder = base / f"{library} Original Posters"
-        print(f"\n### {library} ({', '.join(types)}) ###")
-        if args.mode == "restore":
-            restore(section, types, folder, args.apply, counts)
+        item = selected_item(plex, section, a) if targeted else None
+        print(f"\n### {library} ({item.type if item is not None else ', '.join(types)}) ###")
+        if item is not None:
+            print(f"Selected [{item.type}:{item.ratingKey}] {title(item)}")
+        if a.mode == "restore":
+            restore(section, types, folder, a.apply, counts, item)
         else:
-            backup(plex, token, section, types, folder, args.apply, args.overwrite,
-                   args.include_labeled, counts, archive_dir, labeled_skipped)
-    if args.mode == "backup":
-        print_labeled_skipped(labeled_skipped)
+            backup(plex, token, section, types, folder, a.apply, a.overwrite, a.include_labeled, counts, archive_dir, item)
     print("\nSummary: " + (", ".join(f"{k}={v}" for k, v in sorted(counts.items())) or "nothing found"))
     print("No poster backup was deleted during restore.")
-    return 1 if counts["failed"] else 0
-
-
-def main(argv=None):
-    args = args_parse(argv)
-    path = report_path(args)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    # Create a new private report each time; never silently overwrite an old log.
-    fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
-    with os.fdopen(fd, "w", encoding="utf-8", buffering=1) as report:
-        with redirect_stdout(TeeStream(sys.stdout, report)), redirect_stderr(TeeStream(sys.stderr, report)):
-            print(f"Review report: {path}", flush=True)
-            labeled_skipped = []
-            try:
-                status = run(args, labeled_skipped)
-            except Exception as exc:
-                print(f"FATAL: {type(exc).__name__}: {exc}", file=sys.stderr)
-                if args.mode == "backup":
-                    print_labeled_skipped(labeled_skipped)
-                status = 2
-            print(f"\nReview log saved: {path}", flush=True)
-            return status
+    if counts["failed"]:
+        return 1
+    return 0
 
 
 if __name__ == "__main__":
     try:
         sys.exit(main())
-    except Exception as exc:
-        print(f"FATAL: {type(exc).__name__}: {exc}", file=sys.stderr)
+    except Exception as e:
+        print(f"FATAL: {type(e).__name__}: {e}", file=sys.stderr)
         sys.exit(2)
