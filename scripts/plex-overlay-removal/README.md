@@ -62,13 +62,15 @@ Step 1 — Update the missing posters in Plex
 For items skipped because their backups are missing, select clean artwork manually in Plex. Once the poster is correct, remove that item's Overlay label in Plex.
 
 This is necessary because the script deliberately avoids treating still-labeled posters as clean originals.
+
+
 Step 2 — Download all updated Plex posters
 First preview:
 ```bash
 /opt/kometa/.venv/bin/python \
   /opt/kometa-quickstart/config/kometa_overlay_preserve.py \
   backup --library "Anime" --overwrite
-```bash
+```
 
 Then download:
 ```bash
@@ -97,5 +99,30 @@ Do not run the backup command while unwanted overlays are still present. By defa
 
 Finally, the backup mode saves the currently selected artwork from Plex, not every alternative poster in Plex's poster picker. These new files are suitable as a baseline for later Kometa operations, provided the posters were clean when downloaded. 
 
+## Failed Image Bacup
+If any of the images fail to backup, it will show as an error in the logs first column.  The following commands can be used after the script name to single out a show, season, or episode that needs attention.
 
+
+### Back up one show's poster
+```bash
+backup --library "Anime" --show "Attack on Titan" --apply
+```
+
+### Back up one episode thumbnail
+```bash
+backup --library "Anime" --show "Attack on Titan" --season 1 --episode 3 --apply
+```
+
+### Retry a specific Plex metadata ID
+```bash
+backup --library "Anime" --rating-key 354568 --apply
+```
 This workflow gives you the two behaviors you want: a cleanup that continues past missing originals, followed by a fresh backup of the posters you've selected in Plex.
+
+## Note
+
+The following can be used to override the overlay label in Plex to scan all the files, without including this the poster will be ignored.
+
+```bash
+--include-labeled
+```
